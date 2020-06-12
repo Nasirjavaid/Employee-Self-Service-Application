@@ -21,7 +21,7 @@ class _SalarySlipItemsListViewVericalState
     1,
     11,
     1,
-    1,
+    1,1,1,1,1,1,1,1,
   ];
 
   AnimationController animationController;
@@ -44,7 +44,7 @@ class _SalarySlipItemsListViewVericalState
       child: Scaffold(
         backgroundColor: AppTheme.pieChartBackgroundColor,
         appBar: AppBar(
-          // Add AppBar here only
+      
 
           backgroundColor: AppTheme.drawerBackgroundColor2,
           elevation: 0.0,

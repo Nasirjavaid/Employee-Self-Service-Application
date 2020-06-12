@@ -5,9 +5,9 @@ import 'package:ess_application/ui/DashboardScreen/myNavDrawer.dart';
 import 'package:ess_application/ui/EmployeeLeaveBalanceScreen/EmployeeLeaveBalanceScreen.dart';
 import 'package:ess_application/ui/EmployeeLeaveFormScreen/employeeLeaveApplicationForm.dart';
 import 'package:ess_application/ui/SalarySlipScreen/salarySlipItemsListViewVertical.dart';
-import 'package:ess_application/ui/SalarySlipScreen/salarySlipScreen.dart';
 import 'package:ess_application/ui/UserProfileScreen/userProfileScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:ess_application/ui/NotificationScreen/notificationScreen.dart';
 
 class DashbordScreen extends StatefulWidget {
   @override
@@ -157,7 +157,13 @@ class _DashbordScreenState extends State<DashbordScreen> {
                     builder: (context) => EmployeeLeaveApplicationForm()));
           }, "Apply leaves"),
           buildCardWithIcon(
-              notificationsImageLink, context, () {}, "Notifications"),
+              notificationsImageLink, context, () {
+
+  Navigator.push(context,
+                MaterialPageRoute(builder: (context) => NotificationScreen()));
+
+
+              }, "Notifications"),
           buildCardWithIcon(leavebalanceImageLink, context, () {
             Navigator.push(
                 context,

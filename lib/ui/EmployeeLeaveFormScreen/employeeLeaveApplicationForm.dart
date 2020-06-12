@@ -384,7 +384,7 @@ class _EmployeeLeaveApplicationFormState
                 const EdgeInsets.symmetric(vertical: 5.0, horizontal: 42.0),
             child: Text(
               "Apply",
-              style: Theme.of(context).textTheme.button
+              style: Theme.of(context).textTheme.button.copyWith(color:AppTheme.drawerBackgroundColor2,fontWeight:FontWeight.w700)
             ),
           ),
           onPressed: () {

@@ -187,7 +187,7 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
                     context,
                     "Employee No.",
                     "234636",
-                    AppTheme.pieChartBackgroundColor,
+                    AppTheme.pieChartBackgroundColor4,
                     100,
                     12,
                     13,

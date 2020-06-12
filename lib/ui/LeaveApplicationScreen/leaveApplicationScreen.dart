@@ -25,7 +25,7 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
         appBar: AppBar(
           // Add AppBar here only
 
-          backgroundColor: AppTheme.drawerBackgroundColor1,
+          backgroundColor: AppTheme.drawerBackgroundColor2,
           elevation: 0.0,
           title: Text(
             "Leave Requests (5)",
@@ -43,7 +43,7 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
                 onPressed: null)
           ],
         ),
-        backgroundColor: AppTheme.drawerBackgroundColor1,
+        backgroundColor: AppTheme.drawerBackgroundColor2,
         body: _mainBody());
   }
 

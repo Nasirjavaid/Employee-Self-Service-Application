@@ -82,7 +82,7 @@ class _EmployeeLeaveBalanceScreenState
         iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: AppTheme.drawerBackgroundColor1,
+        backgroundColor: AppTheme.drawerBackgroundColor2,
         title: Text(
           "Leave Balance",
           style: Theme.of(context)

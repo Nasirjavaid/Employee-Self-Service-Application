@@ -21,7 +21,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         appBar: AppBar(
           // Add AppBar here only
 
-          backgroundColor: AppTheme.drawerBackgroundColor1,
+          backgroundColor: AppTheme.drawerBackgroundColor2,
           elevation: 0.0,
           title: Text("My Profile",style: Theme.of(context).textTheme.title.copyWith(color:Colors.white,fontWeight:FontWeight.w600),),
           centerTitle: true,
@@ -107,8 +107,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     return Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(colors: [
-        AppTheme.drawerBackgroundColor1,
-        AppTheme.drawerBackgroundColor1
+        AppTheme.drawerBackgroundColor2,
+        AppTheme.drawerBackgroundColor2
       ], begin: Alignment.bottomLeft, end: Alignment.topRight)),
       height: 140,
       child: Center(child: Text("")),

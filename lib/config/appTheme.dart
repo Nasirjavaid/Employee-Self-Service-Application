@@ -60,6 +60,7 @@ class AppTheme {
   static Color pieChartBackgroundColor6 = Color(0xFFf7eded);
   static Color netPayAbleSalary = Color(0xFF870707);
   static Color salarySlipDateColor = Color(0xFF624699);
+  static Color salarySlipDateColorBackgrpund = Color(0xFFe4cef5);
 
   static List<Color> pieCahrtColourList1 =[pieChart1Color1,pieChart1Color3];
   static List<Color> pieCahrtColourList2 =[pieChart2Color1,pieChart2Color2,pieChart2Color3];

@@ -1,6 +1,7 @@
 import 'package:ess_application/config/appTheme.dart';
-import 'package:ess_application/config/design_course_app_theme.dart';
+
 import 'package:ess_application/ui/CommonWidgets/roundedImageViewWithoutBorder.dart';
+import 'package:ess_application/ui/SalarySlipScreen/salarySlipScreen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -11,28 +12,30 @@ class SalarySlipListViewVerticalItemCard extends StatelessWidget {
   SalarySlipListViewVerticalItemCard(
       {this.animationController, this.animation});
 
-  String leavebalanceImageLink = "assets/images/leavebalance.png";
+  String leavebalanceImageLink = "assets/design_course/interFace4.png";
+  String leavebalanceImageLink2 = "assets/design_course/webInterFace.png";
   @override
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: animation,
       child: Padding(
-        padding: const EdgeInsets.all(3.0),
+        padding: const EdgeInsets.only(right: 10.0, top: 4),
         child: InkWell(
           splashColor: AppTheme.pieChartBackgroundColor4,
           onTap: () {
-            // callback();
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SalarySlipScreen()));
           },
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: 100,
+            height: 70,
             child: Stack(
+            
               children: <Widget>[
                 Positioned.fill(
                   child: Align(
-                    alignment: Alignment(1, 0),
+                    alignment: Alignment(1.0, 0),
                     child: Container(
-                      width: MediaQuery.of(context).size.width - 50,
+                      width: MediaQuery.of(context).size.width - 40,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                           color: Colors.white70),
@@ -40,7 +43,7 @@ class SalarySlipListViewVerticalItemCard extends StatelessWidget {
                   ),
                 ),
                 dataContainer(context),
-                imageContainer(context, leavebalanceImageLink)
+               imageContainer(context, leavebalanceImageLink)
               ],
             ),
           ),
@@ -50,28 +53,26 @@ class SalarySlipListViewVerticalItemCard extends StatelessWidget {
   }
 
   Widget imageContainer(BuildContext context, String leavebalanceImageLink) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
-      child: Positioned.fill(
+    return Positioned.fill(
         child: Align(
-          alignment: Alignment(-1, 0),
+          alignment: Alignment(-0.93, 0),
           child: Container(
-            height: 70,
-            width: 70,
+            height: 50,
+            width: 50,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
-                color: Colors.white),
+                color: Colors.white54),
             child: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(3),
               child: Row(
                 children: <Widget>[
                   ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                    borderRadius: const BorderRadius.all(Radius.circular(0.0)),
                     child: AspectRatio(
                         aspectRatio: 1.0,
                         child: RoundedCornerImageViewWithoutBorder(
-                          height: 70,
-                          width: 70,
+                          height: 50,
+                          width: 50,
                           imageLink: leavebalanceImageLink,
                         )),
                   )
@@ -80,21 +81,117 @@ class SalarySlipListViewVerticalItemCard extends StatelessWidget {
             ),
           ),
         ),
-      ),
+    
     );
   }
 
   Widget dataContainer(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Positioned.fill(
+    return Positioned.fill(
         child: Align(
-          alignment: Alignment(-0.35, 1),
-          child: Column(
-            children: [Text("data")],
+          alignment: Alignment(0.6, 1),
+          child: Container(
+            width: MediaQuery.of(context).size.width-100,
+            child: Padding(
+              padding: const EdgeInsets.only(top:11.0,right:0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+               
+                children: [
+
+
+                    Container(
+                    //width: 80,
+                    child: Column(
+                      children: [
+                        Text("Issue Date",
+                            style: Theme.of(context).textTheme.button.copyWith(
+                                color: AppTheme.salarySlipDateColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 11)),
+                        SizedBox(height: 6),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              color: Color(0xFFefe9f5)),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 8.0, bottom: 8.0, left: 20, right: 20),
+                            child: Text("jan 20,2020",
+                                style: Theme.of(context).textTheme.button.copyWith(
+                                    color: AppTheme.salarySlipDateColor,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12.5)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                 
+              
+                  Container(
+                   // width: 100,
+                    child: Column(
+                      children: [
+                        Text("Ded Amount",
+                            style: Theme.of(context).textTheme.button.copyWith(
+                                color: AppTheme.pieChart1Color1,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 11)),
+                        SizedBox(height: 6),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              color: AppTheme.pieChartBackgroundColor6),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 8.0, bottom: 8.0, left: 20, right: 20),
+                            child: Text("11,109",
+                                style: Theme.of(context).textTheme.button.copyWith(
+                                    color: AppTheme.pieChart1Color1,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12.5)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+
+                   Container(
+                   // width: 80,
+                    child: Column(
+                      children: [
+                        Text("Net Salary",
+                            style: Theme.of(context).textTheme.button.copyWith(
+                                color: AppTheme.pieChart1Color3,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 11)),
+                        SizedBox(height: 6),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              color: AppTheme.pieChartBackgroundColor5),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 8.0, bottom: 8.0, left: 20, right: 20),
+                            child: Text("61,109",
+                                style: Theme.of(context).textTheme.button.copyWith(
+                                    color: AppTheme.pieChart1Color3,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12.5)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
-      ),
+      
     );
   }
+
+ 
 }
