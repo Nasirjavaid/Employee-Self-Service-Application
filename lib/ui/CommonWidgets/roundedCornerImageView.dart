@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class RoundedCornerImageView extends StatelessWidget {
 
 
-double height,width,borderWidth;
+final double height,width,borderWidth;
   RoundedCornerImageView({this.height,this.width,this.borderWidth});
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:ess_application/config/appTheme.dart';
+import 'package:ess_application/ui/NotificationScreen/defaultNotificationsListViewFragment.dart';
 import 'package:ess_application/ui/NotificationScreen/myNotificationsListViewFragment.dart';
 import 'package:flutter/material.dart';
 
@@ -76,7 +77,8 @@ class _NotificationScreenState extends State<NotificationScreen>
               animationController: animationController,
               category: category,
             ),
-            Text("Default Notifications"),
+           DefaultNotificationsLisVewFragment( animationController: animationController,
+              category: category,),
           ]),
         ),
       ),

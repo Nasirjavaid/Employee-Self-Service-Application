@@ -2,11 +2,11 @@ import 'package:ess_application/ui/NotificationScreen/myNotificationsListItemCar
 import 'package:flutter/material.dart';
 
 import 'package:ess_application/config/appTheme.dart';
-import 'package:ess_application/ui/SalarySlipScreen/salarySlipListViewVerticalItemCard.dart';
+
 
 class MyNotificationsListViewFragment extends StatelessWidget {
-  AnimationController animationController;
-  List category;
+ final AnimationController animationController;
+ final List category;
 
   MyNotificationsListViewFragment({
     this.animationController,

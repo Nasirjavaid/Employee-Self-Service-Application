@@ -12,8 +12,8 @@ class SalarySlipListViewVerticalItemCard extends StatelessWidget {
   SalarySlipListViewVerticalItemCard(
       {this.animationController, this.animation});
 
-  String leavebalanceImageLink = "assets/design_course/interFace4.png";
-  String leavebalanceImageLink2 = "assets/design_course/webInterFace.png";
+ final String leavebalanceImageLink = "assets/design_course/interFace4.png";
+ final String leavebalanceImageLink2 = "assets/design_course/webInterFace.png";
   @override
   Widget build(BuildContext context) {
     return FadeTransition(

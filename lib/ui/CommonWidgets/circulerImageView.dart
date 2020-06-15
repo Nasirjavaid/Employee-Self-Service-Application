@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CirculerImageView extends StatelessWidget {
 
-  double height,width;
+ final double height,width;
   CirculerImageView({this.height,this.width});
   @override
   Widget build(BuildContext context) {

@@ -4,13 +4,13 @@ import 'package:pie_chart/pie_chart.dart';
 import 'package:ess_application/config/appTheme.dart';
 
 class EmployeeLeaveBalancePieChart extends StatefulWidget {
-  List<Color> pieCahrtColorList;
-  Map<String, double> dataMap;
-  String leaveTypeText;
-  bool showLegendBit;
-  LegendPosition legendPosition;
-  Color pieChartBackgroundColor;
-  int totalLeaves;
+ final List<Color> pieCahrtColorList;
+ final Map<String, double> dataMap;
+ final String leaveTypeText;
+ final bool showLegendBit;
+ LegendPosition legendPosition;
+ final Color pieChartBackgroundColor;
+ final int totalLeaves;
   EmployeeLeaveBalancePieChart(
       {Key key, this.pieCahrtColorList, this.dataMap, this.totalLeaves,this.leaveTypeText,this.showLegendBit,this.pieChartBackgroundColor})
       : super(key: key);
