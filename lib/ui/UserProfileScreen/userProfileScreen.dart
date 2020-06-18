@@ -79,29 +79,174 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       child: ListView(children: [
         //Oval card here
         SizedBox(
-          height: 40,
+          height: 45,
         ),
         _userInfoCard(),
-        SizedBox(
-          height: 5,
-        ),
+      
 
-        //second card with keave info
-        _leaveCard(),
-        SizedBox(
-          height: 5,
-        ),
-        //3rd card with info claim info
-        cliamCard(),
-        //News card
+        // //second card with keave info
+        // _leaveCard(),
+        // SizedBox(
+        //   height: 5,
+        // ),
+        // //3rd card with info claim info
+        // cliamCard(),
+        // //News card
 
-        SizedBox(
-          height: 5,
-        ),
-        _newsCard()
+        // SizedBox(
+        //   height: 5,
+        // ),
+        // _newsCard()
       ]),
     );
   }
+
+   Widget employeeInfoCard(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white70,
+          borderRadius: BorderRadius.all(Radius.circular(5))),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal:8,),
+        child: Column(
+          //crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Column(
+            //   children: [
+            //     // Row(
+            //     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     //   children: [
+            //     //     Text(
+            //     //       "Employee Info",
+            //     //       style: Theme.of(context).textTheme.bodyText1.copyWith(
+            //     //           fontSize: 14,
+            //     //           fontWeight: FontWeight.w600,
+            //     //           color: AppTheme.nearlyBlue),
+            //     //     ),
+            //     //     Text(
+            //     //       "Jan,2020",
+            //     //       style: Theme.of(context).textTheme.bodyText1.copyWith(
+            //     //           fontSize: 14,
+            //     //           fontWeight: FontWeight.w600,
+            //     //           color: AppTheme.salarySlipDateColor),
+            //     //     ),
+            //     //   ],
+            //     // ),
+            //   ],
+            // ),
+            // // SizedBox(
+            // //   height: 10,
+            // // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                basicTextViewVertical(
+                    context,
+                    "Employee No.",
+                    "234636",
+                    AppTheme.pieChartBackgroundColor4,
+                    100,
+                    12,
+                    13,
+                    Colors.black38),
+                SizedBox(
+                  height: 5,
+                ),
+                basicTextViewVertical(
+                    context,
+                    "Employee Name",
+                    "Ahmad ali",
+                    AppTheme.pieChartBackgroundColor4,
+                    100,
+                    12,
+                    13,
+                    Colors.black38),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                basicTextViewVertical(
+                    context,
+                    "Designation",
+                    "PSO",
+                    AppTheme.pieChartBackgroundColor4,
+                    100,
+                    12,
+                    13,
+                    Colors.black38),
+                SizedBox(
+                  height: 5,
+                ),
+                basicTextViewVertical(
+                    context,
+                    "Department",
+                    "Admin-HR",
+                    AppTheme.pieChartBackgroundColor4,
+                    100,
+                    12,
+                    13,
+                    Colors.black38),
+              ],
+            ),
+
+            SizedBox(height: 8,),
+            Row(
+           
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                basicTextViewVertical(
+                    context,
+                    "Staus",
+                    "Permanent",
+                    AppTheme.pieChartBackgroundColor4,
+                    100,
+                    12,
+                    13,
+                    Colors.black38),
+                SizedBox(
+                  height: 5,
+                ),
+                basicTextViewVertical(
+                    context,
+                    "Joining Date",
+                    "01-Mar-2010",
+                    AppTheme.pieChartBackgroundColor4,
+                    100,
+                    12,
+                    13,
+                    Colors.black38),
+              ],
+            ),
+
+            // SizedBox(
+            //   height: 5,
+            // ),
+            // Row(
+            //     // crossAxisAlignment: CrossAxisAlignment.start,
+            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //   children: [
+            //     basicTextViewVertical(
+            //         context,
+            //         "Section ",
+            //         "Admin ",
+            //         AppTheme.pieChartBackgroundColor4,
+            //         100,
+            //         12,
+            //         13,
+            //         Colors.black38),
+            //         Container(width: 100,),
+            //   ],
+            // )
+          ],
+        ),
+      ),
+    );
+  }
+
 
   Widget backgroundCard() {
     return Container(
@@ -135,7 +280,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                     ],
                   ),
-                  height: 130,
+                  height: MediaQuery.of(context).size.height-430,
                   child: Padding(
                     padding:
                         const EdgeInsets.only(top: 60.0, left: 20, right: 20),
@@ -144,108 +289,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Expanded(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                  height: 15,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Text(
-                                    "Name   :",
-                                    textAlign: TextAlign.right,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2
-                                        .copyWith(
-                                            color: AppTheme.lightText
-                                                .withOpacity(0.4)),
-                                  )),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              SizedBox(
-                                  height: 15,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Text(
-                                    "Designation   :",
-                                    textAlign: TextAlign.right,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2
-                                        .copyWith(
-                                            color: AppTheme.lightText
-                                                .withOpacity(0.4)),
-                                  )),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              SizedBox(
-                                  height: 15,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Text(
-                                    "Emp ID   :",
-                                    textAlign: TextAlign.right,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2
-                                        .copyWith(
-                                            color: AppTheme.lightText
-                                                .withOpacity(0.4)),
-                                  )),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                  height: 15,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Text(
-                                    "  Kashif Amin",
-                                    textAlign: TextAlign.left,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .copyWith(
-                                            color:
-                                                AppTheme.drawerBackgroundColor3,
-                                            fontSize: 17),
-                                  )),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              SizedBox(
-                                  height: 15,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Text(
-                                    "   CEO",
-                                    textAlign: TextAlign.left,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .copyWith(
-                                            color: AppTheme.lightText,
-                                            fontSize: 14),
-                                  )),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              SizedBox(
-                                  height: 15,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Text(
-                                    "   325333",
-                                    textAlign: TextAlign.left,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .copyWith(
-                                            color: AppTheme.lightText,
-                                            fontSize: 14),
-                                  )),
-                            ],
-                          ),
+
+
+                          child: employeeInfoCard(context),
+                      
                         )
                       ],
                     ),
@@ -253,13 +300,52 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 )),
             Positioned.fill(
               child: Align(
-                alignment: Alignment(0, -1.9),
+                alignment: Alignment(0, -1.38),
                 child:CirculerImageView(height: 70,width: 70)
                 ),
               ),
             
           ],
         ),
+      ],
+    );
+  }
+   Widget basicTextViewVertical(
+      BuildContext context,
+      String titleText,
+      String mainInfo,
+      Color textBackgroundColor,
+      double customWidth,
+      double titleTextSize,
+      double mainTextSize,
+      Color tittleTextColor) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Text(
+          "$titleText",
+          style: Theme.of(context).textTheme.bodyText1.copyWith(
+              fontSize: titleTextSize,
+              fontWeight: FontWeight.w900,
+              color: tittleTextColor),
+        ),
+        SizedBox(height: 8),
+        Container(
+          width: customWidth,
+          decoration: BoxDecoration(
+              color: textBackgroundColor,
+              borderRadius: BorderRadius.all(Radius.circular(5))),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0),
+            child: Text(
+              "$mainInfo",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  fontSize: mainTextSize, fontWeight: FontWeight.w500),
+            ),
+          ),
+        )
       ],
     );
   }
@@ -525,3 +611,105 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 }
+  //   child: Column(
+                        //     children: [
+                        //       SizedBox(
+                        //           height: 15,
+                        //           width: MediaQuery.of(context).size.width,
+                        //           child: Text(
+                        //             "Name   :",
+                        //             textAlign: TextAlign.right,
+                        //             style: Theme.of(context)
+                        //                 .textTheme
+                        //                 .bodyText2
+                        //                 .copyWith(
+                        //                     color: AppTheme.lightText
+                        //                         .withOpacity(0.4)),
+                        //           )),
+                        //       SizedBox(
+                        //         height: 4,
+                        //       ),
+                        //       SizedBox(
+                        //           height: 15,
+                        //           width: MediaQuery.of(context).size.width,
+                        //           child: Text(
+                        //             "Designation   :",
+                        //             textAlign: TextAlign.right,
+                        //             style: Theme.of(context)
+                        //                 .textTheme
+                        //                 .bodyText2
+                        //                 .copyWith(
+                        //                     color: AppTheme.lightText
+                        //                         .withOpacity(0.4)),
+                        //           )),
+                        //       SizedBox(
+                        //         height: 4,
+                        //       ),
+                        //       SizedBox(
+                        //           height: 15,
+                        //           width: MediaQuery.of(context).size.width,
+                        //           child: Text(
+                        //             "Emp ID   :",
+                        //             textAlign: TextAlign.right,
+                        //             style: Theme.of(context)
+                        //                 .textTheme
+                        //                 .bodyText2
+                        //                 .copyWith(
+                        //                     color: AppTheme.lightText
+                        //                         .withOpacity(0.4)),
+                        //           )),
+                        //     ],
+                        //   ),
+                        // ),
+                        // Expanded(
+                        //   child: Column(
+                        //     mainAxisAlignment: MainAxisAlignment.start,
+                        //     children: [
+                        //       SizedBox(
+                        //           height: 15,
+                        //           width: MediaQuery.of(context).size.width,
+                        //           child: Text(
+                        //             "  Kashif Amin",
+                        //             textAlign: TextAlign.left,
+                        //             style: Theme.of(context)
+                        //                 .textTheme
+                        //                 .bodyText1
+                        //                 .copyWith(
+                        //                     color:
+                        //                         AppTheme.drawerBackgroundColor3,
+                        //                     fontSize: 17),
+                        //           )),
+                        //       SizedBox(
+                        //         height: 4,
+                        //       ),
+                        //       SizedBox(
+                        //           height: 15,
+                        //           width: MediaQuery.of(context).size.width,
+                        //           child: Text(
+                        //             "   CEO",
+                        //             textAlign: TextAlign.left,
+                        //             style: Theme.of(context)
+                        //                 .textTheme
+                        //                 .bodyText1
+                        //                 .copyWith(
+                        //                     color: AppTheme.lightText,
+                        //                     fontSize: 14),
+                        //           )),
+                        //       SizedBox(
+                        //         height: 4,
+                        //       ),
+                        //       SizedBox(
+                        //           height: 15,
+                        //           width: MediaQuery.of(context).size.width,
+                        //           child: Text(
+                        //             "   325333",
+                        //             textAlign: TextAlign.left,
+                        //             style: Theme.of(context)
+                        //                 .textTheme
+                        //                 .bodyText1
+                        //                 .copyWith(
+                        //                     color: AppTheme.lightText,
+                        //                     fontSize: 14),
+                        //           )),
+                        //     ],
+                        //   ),
