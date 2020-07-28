@@ -1,15 +1,23 @@
 import 'package:badges/badges.dart';
+import 'package:ess_application/bloc/userAuthBloc/userAuthBloc.dart';
+import 'package:ess_application/bloc/userAuthBloc/userAuthEvent.dart';
+import 'package:ess_application/bloc/userProfileBloc/userProfileBloc.dart';
+import 'package:ess_application/bloc/userProfileBloc/userProfileEvent.dart';
+import 'package:ess_application/bloc/userProfileBloc/userProfileState.dart';
 import 'package:ess_application/config/appTheme.dart';
 import 'package:ess_application/config/methods.dart';
+import 'package:ess_application/model/userLogin.dart';
+import 'package:ess_application/repository/userProfileRepository.dart';
 import 'package:ess_application/ui/CommonWidgets/roundedImageViewWithoutBorder.dart';
 import 'package:ess_application/ui/DashboardScreen/myNavDrawer.dart';
 import 'package:ess_application/ui/EmployeeLeaveBalanceScreen/EmployeeLeaveBalanceScreen.dart';
 import 'package:ess_application/ui/EmployeeLeaveFormScreen/employeeLeaveApplicationForm.dart';
-import 'package:ess_application/ui/SalarySlipScreen/salarySlipItemsListViewVertical.dart';
 import 'package:ess_application/ui/UserProfileScreen/userProfileScreen.dart';
+import 'package:ess_application/ui/commonWidgets/loadingIndicator.dart';
+import 'package:ess_application/ui/salarySlipScreen/salarySlipItemsListViewVertical.dart';
 import 'package:flutter/material.dart';
 import 'package:ess_application/ui/NotificationScreen/notificationScreen.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DashbordScreen extends StatefulWidget {
   @override
@@ -24,8 +32,36 @@ class _DashbordScreenState extends State<DashbordScreen> {
   String leavebalanceImageLink = "assets/images/leavebalance.png";
   String summaryImageLink = "assets/images/newsummary.png";
 
+  UserProfileRepository userProfileRepository = new UserProfileRepository();
+
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(create: (context) {
+      return UserProfileBloc(userProfileRepository: userProfileRepository)
+        ..add(UserProfileEventStartDataObtaining());
+    }, child: BlocBuilder<UserProfileBloc, UserProfileState>(
+      builder: (context, state) {
+        UserLogin userLogin;
+        //initial state is data is loading  from the repository show loading indicator
+        if (state is UserProfileInProgressDatatObtaining) {
+          return LoadingIndicator();
+        }
+        // If any error then show error message
+        if (state is UserProfilFaileldToObtaineData) {
+          return Text("Failed to obtain ${state.error}");
+        }
+        // if data is Successfully obtained pass to widget body
+        if (state is UserProfilSuccessfullyDataObtained) {
+          print("Obtained user data in user profile  ${state.userLogin.empNo}");
+          userLogin = state.userLogin;
+          return mainBody(context, state.userLogin);
+        }
+        return LoadingIndicator();
+      },
+    ));
+  }
+
+  Widget mainBody(BuildContext context, UserLogin userLogin) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -58,16 +94,26 @@ class _DashbordScreenState extends State<DashbordScreen> {
 
           actions: [
             alertIconAndBadge(),
+            logpiuActionButton(),
           ],
         ),
-        body: _buildBody(),
+        body: _buildBody(context),
         //Drawer navifation
-        drawer: MyNavDrawer(),
+        drawer: MyNavDrawer(userLogin: userLogin),
       ),
     );
   }
 
   Widget alertIconAndBadge() {
+    return IconButton(
+      onPressed: () {
+        BlocProvider.of<UserAuthBloc>(context).add(AuthLoggedOut());
+      },
+      icon: Icon(Icons.settings_power),
+    );
+  }
+
+  Widget logpiuActionButton() {
     return Badge(
       position: BadgePosition.topRight(top: 0, right: 3),
       animationDuration: Duration(milliseconds: 300),
@@ -80,46 +126,43 @@ class _DashbordScreenState extends State<DashbordScreen> {
     );
   }
 
-  Widget _buildBody() {
-    return 
-    
-        Container(
-        height: MediaQuery.of(context).size.height,
-        child: Column(mainAxisSize: MainAxisSize.max, children: [
-          SizedBox(
-            height: 100,
+  Widget _buildBody(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      child: Column(mainAxisSize: MainAxisSize.max, children: [
+        SizedBox(
+          height: 100,
+        ),
+        mainHeader(context),
+        gridViewWithMenuItems(context),
+        Spacer(),
+        InkWell(
+          onTap: () => Methods.launchURL(),
+          child: Column(
+            // mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Powered by",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(color: Colors.black38),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              RoundedCornerImageViewWithoutBorder(
+                  width: 100,
+                  height: 26,
+                  imageLink: "assets/images/visionplus.png"),
+            ],
           ),
-          mainHeader(context),
-          gridViewWithMenuItems(context),
-          Spacer(),
-          InkWell(
-              onTap: ()=>Methods.launchURL(),
-                      child: Column(
-              // mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Powered by",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      .copyWith(color: Colors.black38),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                RoundedCornerImageViewWithoutBorder(
-                    width: 100,
-                    height: 26,
-                    imageLink: "assets/images/visionplus.png"),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-        ]),
-      
+        ),
+        SizedBox(
+          height: 15,
+        ),
+      ]),
     );
   }
 
@@ -168,7 +211,13 @@ class _DashbordScreenState extends State<DashbordScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                SalarySlipItemsListViewVerical()));
+                                SalarySlipItemsListViewVericalMain())
+                                
+                                
+                                
+                                
+                                
+                                );
                   }, "Salary Slip"),
                 ],
               ),
@@ -258,7 +307,4 @@ class _DashbordScreenState extends State<DashbordScreen> {
       ),
     );
   }
-
-
-
 }

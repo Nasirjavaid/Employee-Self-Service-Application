@@ -1,45 +1,83 @@
 import 'package:badges/badges.dart';
+import 'package:ess_application/bloc/userProfileBloc/userProfileBloc.dart';
+import 'package:ess_application/bloc/userProfileBloc/userProfileEvent.dart';
+import 'package:ess_application/bloc/userProfileBloc/userProfileState.dart';
 import 'package:ess_application/config/appTheme.dart';
+import 'package:ess_application/model/userLogin.dart';
+import 'package:ess_application/repository/userProfileRepository.dart';
 import 'package:ess_application/ui/CommonWidgets/circulerImageView.dart';
 import 'package:ess_application/ui/CommonWidgets/roundedCornerImageView.dart';
-
 import 'package:ess_application/ui/LeaveApplicationScreen/leaveApplicationScreen.dart';
+import 'package:ess_application/ui/commonWidgets/loadingIndicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
-class UserProfileScreen extends StatefulWidget {
-  @override
-  _UserProfileScreenState createState() => _UserProfileScreenState();
-}
+class UserProfileScreen extends StatelessWidget {
+  // initTest() async {
+  //   UserLogin userLogin = await userProfileRepository.getUserInormation();
+  //   print("Data in main screen init from repo ${userLogin.empName}");
+  // }
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    UserProfileRepository userProfileRepository = UserProfileRepository();
+
     return Container(
-      child: Scaffold(
-        backgroundColor: AppTheme.background,
-        appBar: AppBar(
-          // Add AppBar here only
+        child: Scaffold(
+      backgroundColor: AppTheme.background,
+      appBar: AppBar(
+        // Add AppBar here only
 
-          backgroundColor: AppTheme.drawerBackgroundColor2,
-          elevation: 0.0,
-          title: Text("My Profile",style: Theme.of(context).textTheme.title.copyWith(color:Colors.white,fontWeight:FontWeight.w600),),
-          centerTitle: true,
-          iconTheme: new IconThemeData(color: Colors.white),
-
-          actions: [
-            emailIconAndBadge(),
-            alertIconAndBadge(),
-          ],
+        backgroundColor: AppTheme.drawerBackgroundColor2,
+        elevation: 0.0,
+        title: Text(
+          "My Profile",
+          style: Theme.of(context)
+              .textTheme
+              .title
+              .copyWith(color: Colors.white, fontWeight: FontWeight.w600),
         ),
-        body: _buildBody(),
-        //Drawer navifation
-        
+        centerTitle: true,
+        iconTheme: new IconThemeData(color: Colors.white),
+
+        // actions: [
+        //   emailIconAndBadge(context),
+        //   alertIconAndBadge(context),
+        // ],
       ),
-    );
+      body: BlocProvider(create: (context) {
+        return UserProfileBloc(userProfileRepository: userProfileRepository)
+          ..add(UserProfileEventStartDataObtaining());
+      }, child: BlocBuilder<UserProfileBloc, UserProfileState>(
+        builder: (context, state) {
+          //initial state is data is loading  from the repository show loading indicator
+          if (state is UserProfileInProgressDatatObtaining) {
+            return LoadingIndicator();
+          }
+          // If any error then show error message
+          if (state is UserProfilFaileldToObtaineData) {
+            return Text("Failed to obtain ${state.error}");
+          }
+          // if data is Successfully obtained pass to widget body
+          if (state is UserProfilSuccessfullyDataObtained) {
+            print(
+                "Obtained user data in user profile  ${state.userLogin.empNo}");
+
+            return _buildBody(context,state.userLogin);
+          }
+          return Center(child: Text("Nothing here"));
+        },
+      )),
+    )
+
+        //_buildBody(),
+        //Drawer navifation
+
+        );
   }
 
-  Widget emailIconAndBadge() {
+  Widget emailIconAndBadge(BuildContext context) {
     return Badge(
       position: BadgePosition.topRight(top: 0, right: 3),
       animationDuration: Duration(milliseconds: 300),
@@ -52,7 +90,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 
-  Widget alertIconAndBadge() {
+  Widget alertIconAndBadge(BuildContext context) {
     return Badge(
       position: BadgePosition.topRight(top: 0, right: 3),
       animationDuration: Duration(milliseconds: 300),
@@ -65,15 +103,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context, UserLogin userLogin) {
     return Stack(children: [
       // background blue color to 1/3 of the screen
       backgroundCard(),
-      _innerBody(),
+      _innerBody(context, userLogin)
     ]);
   }
 
-  Widget _innerBody() {
+  Widget _innerBody(BuildContext context, UserLogin userLogin) {
     return Padding(
       padding: const EdgeInsets.only(left: 12.0, right: 12),
       child: ListView(children: [
@@ -81,8 +119,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         SizedBox(
           height: 45,
         ),
-        _userInfoCard(),
-      
+        _userInfoCard(context, userLogin),
 
         // //second card with keave info
         // _leaveCard(),
@@ -101,13 +138,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 
-   Widget employeeInfoCard(BuildContext context) {
+  Widget employeeInfoCard(BuildContext context, UserLogin userLogin) {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white70,
           borderRadius: BorderRadius.all(Radius.circular(5))),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal:8,),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8,
+        ),
         child: Column(
           //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -143,7 +182,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 basicTextViewVertical(
                     context,
                     "Employee No.",
-                    "234636",
+                    "${userLogin.empNo}",
                     AppTheme.pieChartBackgroundColor4,
                     100,
                     12,
@@ -155,7 +194,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 basicTextViewVertical(
                     context,
                     "Employee Name",
-                    "Ahmad ali",
+                    "${userLogin.empName}",
                     AppTheme.pieChartBackgroundColor4,
                     100,
                     12,
@@ -172,7 +211,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 basicTextViewVertical(
                     context,
                     "Designation",
-                    "PSO",
+                    "${userLogin.designation}",
                     AppTheme.pieChartBackgroundColor4,
                     100,
                     12,
@@ -184,7 +223,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 basicTextViewVertical(
                     context,
                     "Department",
-                    "Admin-HR",
+                    "${userLogin.empDepartment}",
                     AppTheme.pieChartBackgroundColor4,
                     100,
                     12,
@@ -193,15 +232,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ],
             ),
 
-            SizedBox(height: 8,),
+            SizedBox(
+              height: 8,
+            ),
             Row(
-           
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 basicTextViewVertical(
                     context,
                     "Staus",
-                    "Permanent",
+                    "${userLogin.status}",
                     AppTheme.pieChartBackgroundColor4,
                     100,
                     12,
@@ -213,7 +253,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 basicTextViewVertical(
                     context,
                     "Joining Date",
-                    "01-Mar-2010",
+                    "${userLogin.dateOfJoining}",
                     AppTheme.pieChartBackgroundColor4,
                     100,
                     12,
@@ -247,7 +287,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 
-
   Widget backgroundCard() {
     return Container(
       decoration: BoxDecoration(
@@ -260,7 +299,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 
-  Widget _userInfoCard() {
+  Widget _userInfoCard(BuildContext context, UserLogin userLogin) {
     return Column(
       children: [
         Stack(
@@ -280,7 +319,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                     ],
                   ),
-                  height: MediaQuery.of(context).size.height-430,
+                  height: MediaQuery.of(context).size.height - 430,
                   child: Padding(
                     padding:
                         const EdgeInsets.only(top: 60.0, left: 20, right: 20),
@@ -289,10 +328,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Expanded(
-
-
-                          child: employeeInfoCard(context),
-                      
+                          child: employeeInfoCard(context, userLogin),
                         )
                       ],
                     ),
@@ -300,17 +336,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 )),
             Positioned.fill(
               child: Align(
-                alignment: Alignment(0, -1.38),
-                child:CirculerImageView(height: 70,width: 70)
-                ),
-              ),
-            
+                  alignment: Alignment(0, -1.38),
+                  child: CirculerImageView(height: 70, width: 70,imageUrl:userLogin.imageUrl)),
+            ),
           ],
         ),
       ],
     );
   }
-   Widget basicTextViewVertical(
+
+  Widget basicTextViewVertical(
       BuildContext context,
       String titleText,
       String mainInfo,
@@ -350,15 +385,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 
-  Widget _leaveCard() {
+  Widget _leaveCard(BuildContext context) {
     return InkWell(
-      onTap: (){
-
-         Navigator.push(context, MaterialPageRoute(builder: (context)=> LeaveApplicationScreen(
-
-                           )));
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => LeaveApplicationScreen()));
       },
-          child: Card(
+      child: Card(
         elevation: 6,
         color: AppTheme.white,
         child: Container(
@@ -382,9 +415,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-
                       //imageview widget
-                   RoundedCornerImageView(height: 50,width: 50,borderWidth: 1,),
+                      RoundedCornerImageView(
+                        height: 50,
+                        width: 50,
+                        borderWidth: 1,
+                      ),
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -408,7 +444,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   .textTheme
                                   .subtitle1
                                   .copyWith(
-                                      color: AppTheme.lightText.withOpacity(0.4),
+                                      color:
+                                          AppTheme.lightText.withOpacity(0.4),
                                       fontSize: 14),
                             ),
                             SizedBox(
@@ -421,7 +458,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   .textTheme
                                   .subtitle1
                                   .copyWith(
-                                      color: AppTheme.lightText.withOpacity(0.7),
+                                      color:
+                                          AppTheme.lightText.withOpacity(0.7),
                                       fontSize: 14),
                             ),
                           ]),
@@ -461,7 +499,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       .textTheme
                                       .subtitle1
                                       .copyWith(
-                                          color: AppTheme.white.withOpacity(0.4),
+                                          color:
+                                              AppTheme.white.withOpacity(0.4),
                                           fontSize: 10),
                                 )
                               ]),
@@ -476,7 +515,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 
-  Widget cliamCard() {
+  Widget cliamCard(BuildContext context) {
     return Card(
         elevation: 6,
         child: Container(
@@ -520,7 +559,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         ));
   }
 
-  Widget _newsCard() {
+  Widget _newsCard(BuildContext context) {
     return Card(
       elevation: 6,
       color: AppTheme.white,
@@ -611,105 +650,105 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 }
-  //   child: Column(
-                        //     children: [
-                        //       SizedBox(
-                        //           height: 15,
-                        //           width: MediaQuery.of(context).size.width,
-                        //           child: Text(
-                        //             "Name   :",
-                        //             textAlign: TextAlign.right,
-                        //             style: Theme.of(context)
-                        //                 .textTheme
-                        //                 .bodyText2
-                        //                 .copyWith(
-                        //                     color: AppTheme.lightText
-                        //                         .withOpacity(0.4)),
-                        //           )),
-                        //       SizedBox(
-                        //         height: 4,
-                        //       ),
-                        //       SizedBox(
-                        //           height: 15,
-                        //           width: MediaQuery.of(context).size.width,
-                        //           child: Text(
-                        //             "Designation   :",
-                        //             textAlign: TextAlign.right,
-                        //             style: Theme.of(context)
-                        //                 .textTheme
-                        //                 .bodyText2
-                        //                 .copyWith(
-                        //                     color: AppTheme.lightText
-                        //                         .withOpacity(0.4)),
-                        //           )),
-                        //       SizedBox(
-                        //         height: 4,
-                        //       ),
-                        //       SizedBox(
-                        //           height: 15,
-                        //           width: MediaQuery.of(context).size.width,
-                        //           child: Text(
-                        //             "Emp ID   :",
-                        //             textAlign: TextAlign.right,
-                        //             style: Theme.of(context)
-                        //                 .textTheme
-                        //                 .bodyText2
-                        //                 .copyWith(
-                        //                     color: AppTheme.lightText
-                        //                         .withOpacity(0.4)),
-                        //           )),
-                        //     ],
-                        //   ),
-                        // ),
-                        // Expanded(
-                        //   child: Column(
-                        //     mainAxisAlignment: MainAxisAlignment.start,
-                        //     children: [
-                        //       SizedBox(
-                        //           height: 15,
-                        //           width: MediaQuery.of(context).size.width,
-                        //           child: Text(
-                        //             "  Kashif Amin",
-                        //             textAlign: TextAlign.left,
-                        //             style: Theme.of(context)
-                        //                 .textTheme
-                        //                 .bodyText1
-                        //                 .copyWith(
-                        //                     color:
-                        //                         AppTheme.drawerBackgroundColor3,
-                        //                     fontSize: 17),
-                        //           )),
-                        //       SizedBox(
-                        //         height: 4,
-                        //       ),
-                        //       SizedBox(
-                        //           height: 15,
-                        //           width: MediaQuery.of(context).size.width,
-                        //           child: Text(
-                        //             "   CEO",
-                        //             textAlign: TextAlign.left,
-                        //             style: Theme.of(context)
-                        //                 .textTheme
-                        //                 .bodyText1
-                        //                 .copyWith(
-                        //                     color: AppTheme.lightText,
-                        //                     fontSize: 14),
-                        //           )),
-                        //       SizedBox(
-                        //         height: 4,
-                        //       ),
-                        //       SizedBox(
-                        //           height: 15,
-                        //           width: MediaQuery.of(context).size.width,
-                        //           child: Text(
-                        //             "   325333",
-                        //             textAlign: TextAlign.left,
-                        //             style: Theme.of(context)
-                        //                 .textTheme
-                        //                 .bodyText1
-                        //                 .copyWith(
-                        //                     color: AppTheme.lightText,
-                        //                     fontSize: 14),
-                        //           )),
-                        //     ],
-                        //   ),
+//   child: Column(
+//     children: [
+//       SizedBox(
+//           height: 15,
+//           width: MediaQuery.of(context).size.width,
+//           child: Text(
+//             "Name   :",
+//             textAlign: TextAlign.right,
+//             style: Theme.of(context)
+//                 .textTheme
+//                 .bodyText2
+//                 .copyWith(
+//                     color: AppTheme.lightText
+//                         .withOpacity(0.4)),
+//           )),
+//       SizedBox(
+//         height: 4,
+//       ),
+//       SizedBox(
+//           height: 15,
+//           width: MediaQuery.of(context).size.width,
+//           child: Text(
+//             "Designation   :",
+//             textAlign: TextAlign.right,
+//             style: Theme.of(context)
+//                 .textTheme
+//                 .bodyText2
+//                 .copyWith(
+//                     color: AppTheme.lightText
+//                         .withOpacity(0.4)),
+//           )),
+//       SizedBox(
+//         height: 4,
+//       ),
+//       SizedBox(
+//           height: 15,
+//           width: MediaQuery.of(context).size.width,
+//           child: Text(
+//             "Emp ID   :",
+//             textAlign: TextAlign.right,
+//             style: Theme.of(context)
+//                 .textTheme
+//                 .bodyText2
+//                 .copyWith(
+//                     color: AppTheme.lightText
+//                         .withOpacity(0.4)),
+//           )),
+//     ],
+//   ),
+// ),
+// Expanded(
+//   child: Column(
+//     mainAxisAlignment: MainAxisAlignment.start,
+//     children: [
+//       SizedBox(
+//           height: 15,
+//           width: MediaQuery.of(context).size.width,
+//           child: Text(
+//             "  Kashif Amin",
+//             textAlign: TextAlign.left,
+//             style: Theme.of(context)
+//                 .textTheme
+//                 .bodyText1
+//                 .copyWith(
+//                     color:
+//                         AppTheme.drawerBackgroundColor3,
+//                     fontSize: 17),
+//           )),
+//       SizedBox(
+//         height: 4,
+//       ),
+//       SizedBox(
+//           height: 15,
+//           width: MediaQuery.of(context).size.width,
+//           child: Text(
+//             "   CEO",
+//             textAlign: TextAlign.left,
+//             style: Theme.of(context)
+//                 .textTheme
+//                 .bodyText1
+//                 .copyWith(
+//                     color: AppTheme.lightText,
+//                     fontSize: 14),
+//           )),
+//       SizedBox(
+//         height: 4,
+//       ),
+//       SizedBox(
+//           height: 15,
+//           width: MediaQuery.of(context).size.width,
+//           child: Text(
+//             "   325333",
+//             textAlign: TextAlign.left,
+//             style: Theme.of(context)
+//                 .textTheme
+//                 .bodyText1
+//                 .copyWith(
+//                     color: AppTheme.lightText,
+//                     fontSize: 14),
+//           )),
+//     ],
+//   ),

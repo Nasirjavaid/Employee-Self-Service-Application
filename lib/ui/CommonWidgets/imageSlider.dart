@@ -12,7 +12,7 @@ class _ImageSliderState extends State<ImageSlider> {
     "https://images.squarespace-cdn.com/content/v1/5d01440fc4bd93000125725d/1580951055220-US4F2RWQ0E66G8NI454F/ke17ZwdGBToddI8pDm48kLuFnPMGVMzK8mMmlZWcUC4UqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYxCRW4BPu10St3TBAUQYVKcfIdnX36F6izXnmmCd7tlqy4BJwzFY0SrIFrPxw9MMCo2cKAtV3-xzN3s5ys-PJJ9/Hero_Team_Scheduling.png",
     "https://zoom.us/docs/ent/enterprise/assets/img/zoom.png",
     "https://www.unifysquare.com/wp-content/uploads/2020/01/about-unify-top-image-650x515-V1.png",
-    "https://img.pngio.com/dealroom-meetings-png-pictures-2321_1579.png"
+    "https://cdn3.iconfinder.com/data/icons/business-round-set-1/128/COLLABORATE-512.png"
   ];
 
   int _current = 0;
@@ -35,7 +35,7 @@ class _ImageSliderState extends State<ImageSlider> {
               autoPlayAnimationDuration: Duration(milliseconds: 800),
               autoPlayCurve: Curves.fastOutSlowIn,
               enlargeCenterPage: true,
-               height: 100,
+              height: 100,
               
               scrollDirection: Axis.horizontal,
 

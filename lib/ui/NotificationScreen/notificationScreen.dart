@@ -11,6 +11,7 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen>
     with TickerProviderStateMixin {
   AnimationController animationController;
+  
   List category = [
     1,
     1,
@@ -36,6 +37,13 @@ class _NotificationScreenState extends State<NotificationScreen>
         duration: const Duration(milliseconds: 2000), vsync: this);
     super.initState();
   }
+  @override
+dispose() {
+
+  //dispossing animation controller to controll ticker dispose issues
+  animationController.dispose(); 
+  super.dispose();
+}
 
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 50));
@@ -65,7 +73,7 @@ class _NotificationScreenState extends State<NotificationScreen>
               // isScrollable: true,
               tabs: <Widget>[
                 Container(
-                    height: 40, child: Center(child: Text("My notification"))),
+                    height: 40,child: Center(child: Text("My notification"))),
                 Container(
                     height: 40,
                     child: Center(child: Text("Default notification"))),

@@ -1,21 +1,47 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CirculerImageView extends StatelessWidget {
-
- final double height,width;
-  CirculerImageView({this.height,this.width});
+  final double height, width;
+  String imageUrl;
+  CirculerImageView({this.height, this.width,this.imageUrl});
   @override
   Widget build(BuildContext context) {
-    return  Container(
-                  width: width,
-                  height: height,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: 1),
-                    //borderRadius: BorderRadius.all(Radius.circular(25)),
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/kashifamin.jpg'),
-                        fit: BoxFit.cover),
-                  ));
-  
-  }}
+    return Container(
+        width: width,
+        height: height,
+        child: CachedNetworkImage(
+          imageUrl: imageUrl,
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+                        border: Border.all(
+                color: Colors.white,
+                width: 2,
+              ),
+              shape: BoxShape.circle,
+
+              //  borderRadius: BorderRadius.circular(500),
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.cover,
+                // colorFilter: ColorFilter.mode(
+                //     Colors.black12, BlendMode.colorBurn)
+              ),
+            ),
+          ),
+          placeholder: (context, url) => Column(
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                  height: 14,
+                  width: 14,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                  )),
+            ],
+          ),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+        ));
+  }
+}

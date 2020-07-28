@@ -1,8 +1,12 @@
 import 'package:ess_application/config/appTheme.dart';
+import 'package:ess_application/model/userLogin.dart';
 import 'package:ess_application/ui/DashboardScreen/MyNavDrawerItems.dart';
+import 'package:ess_application/ui/commonWidgets/circulerImageView.dart';
 import 'package:flutter/material.dart';
 
 class MyNavDrawer extends StatelessWidget {
+  UserLogin userLogin;
+  MyNavDrawer({this.userLogin});
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -23,24 +27,15 @@ class MyNavDrawer extends StatelessWidget {
           Container(
             color: AppTheme.drawerBackgroundColor1,
             child: DrawerHeader(
-             
               child: Column(
                 children: [
                   Stack(children: [
                     Align(
-                      child: Container(
-                        width: 70,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                          //borderRadius: BorderRadius.all(Radius.circular(25)),
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              image: AssetImage('assets/images/kashifamin.jpg'),
-                              fit: BoxFit.cover),
-                        ),
-                      ),
-                    ),
+                        child: CirculerImageView(
+                      height: 70,
+                      width: 70,
+                      imageUrl: userLogin.imageUrl,
+                    )),
                     Positioned.fill(
                       child: Align(
                         alignment: Alignment(0, 1.5),
@@ -64,7 +59,7 @@ class MyNavDrawer extends StatelessWidget {
                     )
                   ]),
                   SizedBox(height: 25),
-                  Text("Kashif Amin",
+                  Text("${userLogin.empName}",
                       style: Theme.of(context).textTheme.bodyText2.copyWith(
                           color: Colors.white70, fontWeight: FontWeight.w600)),
                 ],
