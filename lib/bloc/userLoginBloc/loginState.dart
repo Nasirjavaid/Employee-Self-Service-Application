@@ -10,8 +10,10 @@ abstract class LoginState extends Equatable {
 }
 //login nitial state
 class LoginInitial extends LoginState {}
+
 //login in progress
 class LoginInProgress extends LoginState {}
+
 //on any type of log in error 
 class LoginFailure extends LoginState {
   final String error;

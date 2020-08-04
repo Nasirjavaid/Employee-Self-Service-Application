@@ -1,25 +1,46 @@
 import 'package:ess_application/config/appTheme.dart';
+import 'package:ess_application/repository/leaveSummaryRepository.dart';
 import 'package:flutter/material.dart';
 
 class EmployeeLeaveBalalnceHistoryListView extends StatelessWidget {
- final List items = [
+
+  LeaveSummaryRepository leaveSummaryRepository;
+  final List items = [
     1,
     1,
     1,
     1,
     1,
     1,
-    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-  
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
   ];
   @override
   Widget build(BuildContext context) {
+
+
+    
     return Container(
       height: MediaQuery.of(context).size.height - 290,
       child: ListView.builder(
           padding: EdgeInsets.only(top: 0, left: 12, right: 12),
           shrinkWrap: true,
-          // physics: NeverScrollableScrollPhysics(),
+        
           itemCount: items.length,
           scrollDirection: Axis.vertical,
           itemBuilder: (BuildContext context, int index) {

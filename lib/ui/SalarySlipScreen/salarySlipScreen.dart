@@ -1,7 +1,13 @@
+import 'package:ess_application/bloc/userProfileBloc/userProfileBloc.dart';
+import 'package:ess_application/bloc/userProfileBloc/userProfileEvent.dart';
+import 'package:ess_application/bloc/userProfileBloc/userProfileState.dart';
 import 'package:ess_application/config/appTheme.dart';
 import 'package:ess_application/model/salarySlip.dart';
-import 'package:ess_application/service/salarySlipService.dart';
+import 'package:ess_application/model/userLogin.dart';
+import 'package:ess_application/repository/userProfileRepository.dart';
+import 'package:ess_application/ui/commonWidgets/loadingIndicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SalarySlipScreen extends StatefulWidget {
   final SalarySlip salarySlip;
@@ -13,6 +19,7 @@ class SalarySlipScreen extends StatefulWidget {
 }
 
 class _SalarySlipScreenState extends State<SalarySlipScreen> {
+  UserProfileRepository userProfileRepository = UserProfileRepository();
   @override
   void initState() {
     super.initState();
@@ -40,12 +47,36 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
 
           actions: [],
         ),
-        body: _buildBody(context, widget.salarySlip),
+
+        //getting user data
+        body: BlocProvider(create: (context) {
+          return UserProfileBloc(userProfileRepository: userProfileRepository)
+            ..add(UserProfileEventStartDataObtaining());
+        }, child: BlocBuilder<UserProfileBloc, UserProfileState>(
+          builder: (context, state) {
+            //initial state is data is loading  from the repository show loading indicator
+            if (state is UserProfileInProgressDatatObtaining) {
+              return LoadingIndicator();
+            }
+            // If any error then show error message
+            if (state is UserProfilFaileldToObtaineData) {
+              return Text("Failed to obtain ${state.error}");
+            }
+            // if data is Successfully obtained pass to widget body
+            if (state is UserProfilSuccessfullyDataObtained) {
+              return _buildBody(context, widget.salarySlip, state.userLogin);
+            }
+            return Center(child: Text("Nothing here"));
+          },
+        )),
+
+        //_buildBody(context, widget.salarySlip),
       ),
     );
   }
 
-  Widget _buildBody(BuildContext context, SalarySlip salarySlip) {
+  Widget _buildBody(
+      BuildContext context, SalarySlip salarySlip, UserLogin userLogin) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -54,15 +85,7 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                employeeInfoCard(context, widget.salarySlip),
-                // SizedBox(
-                //   height: 5,
-                // ),
-                //  employeeCpmanyStatusInfo(context),
-                // SizedBox(
-                //   height: 5,
-                // ),
-                // employeeDeductionInfoCard(context),
+                employeeInfoCard(context, widget.salarySlip, userLogin),
                 SizedBox(
                   height: 1,
                 ),
@@ -155,7 +178,8 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
     );
   }
 
-  Widget employeeInfoCard(BuildContext context, SalarySlip salarySlip) {
+  Widget employeeInfoCard(
+      BuildContext context, SalarySlip salarySlip, UserLogin userLogin) {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white70,
@@ -211,7 +235,7 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
                 basicTextViewVertical(
                     context,
                     "Employee No.",
-                    "234636",
+                    userLogin.empNo !=null ? "${userLogin.empNo}" : "N/A",
                     AppTheme.pieChartBackgroundColor4,
                     100,
                     12,
@@ -223,7 +247,7 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
                 basicTextViewVertical(
                     context,
                     "Employee Name",
-                    "Ahmad ali",
+                   userLogin.empName!=null ? "${userLogin.empName}" : "N/A",
                     AppTheme.pieChartBackgroundColor4,
                     100,
                     12,
@@ -240,7 +264,7 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
                 basicTextViewVertical(
                     context,
                     "Designation",
-                    "PSO",
+                    userLogin.designation !=null ? "${userLogin.designation}" : "N/A",
                     AppTheme.pieChartBackgroundColor4,
                     100,
                     12,
@@ -252,7 +276,7 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
                 basicTextViewVertical(
                     context,
                     "Department",
-                    "Admin-HR",
+                     userLogin.empDepartment !=null ? "${userLogin.empDepartment}" : "N/A",
                     AppTheme.pieChartBackgroundColor4,
                     100,
                     12,
@@ -270,7 +294,7 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
                 basicTextViewVertical(
                     context,
                     "Staus",
-                    "Permanent",
+                  userLogin.status !=null ? "${userLogin.status}" :"N/A",
                     AppTheme.pieChartBackgroundColor4,
                     100,
                     12,
@@ -282,7 +306,7 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
                 basicTextViewVertical(
                     context,
                     "Joining Date",
-                    "01-Mar-2010",
+                  userLogin.dateOfJoining !=null ?  "${userLogin.dateOfJoining}" : "N/A",
                     AppTheme.pieChartBackgroundColor4,
                     100,
                     12,

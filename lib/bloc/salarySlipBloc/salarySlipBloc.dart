@@ -33,7 +33,6 @@ Stream<Transition<SalarySlipEvent,SalarySlipState>> transformEvents(
 
 
 
-
   @override
   Stream<SalarySlipState> mapEventToState(SalarySlipEvent event) async* {
     final currentState = state;
@@ -53,13 +52,13 @@ Stream<Transition<SalarySlipEvent,SalarySlipState>> transformEvents(
 
 // if current state is success then get next 20 results and add into the previous list 
         if (currentState is SalarySlipSuccessState) {
-          final salalrySlipList = await salarySlipRepository.getSalalrySlips(
+          final salarySlipList = await salarySlipRepository.getSalalrySlips(
               currentState.salarySlipList.length, 20);
 
-          yield salalrySlipList.isEmpty
+          yield salarySlipList.isEmpty
               ? currentState.copyWith(hasReachedMax: true)
               : SalarySlipSuccessState(
-                  salarySlipList: currentState.salarySlipList + salalrySlipList,
+                  salarySlipList: currentState.salarySlipList + salarySlipList,
                   hasReachedMax: false);
         }
       } catch (_) {

@@ -32,5 +32,5 @@ class SalarySlipSuccessState extends SalarySlipState {
 
   @override
   String toString() =>
-      'SalalrySlipScccessState : ${salarySlipList.length}, hasReachedMax : $hasReachedMax';
+      'SalarySlipScccessState : ${salarySlipList.length}, hasReachedMax : $hasReachedMax';
 }
