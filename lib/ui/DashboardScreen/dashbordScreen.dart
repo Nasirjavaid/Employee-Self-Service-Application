@@ -213,13 +213,7 @@ class _DashbordScreenState extends State<DashbordScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                SalarySlipItemsListViewVericalMain())
-                                
-                                
-                                
-                                
-                                
-                                );
+                                SalarySlipItemsListViewVericalMain()));
                   }, "Salary Slip"),
                 ],
               ),

@@ -1,55 +1,126 @@
+import 'package:ess_application/bloc/leaveSummaryBloc/leaveSummaryBloc.dart';
+import 'package:ess_application/bloc/leaveSummaryBloc/leaveSummaryEvent.dart';
+import 'package:ess_application/bloc/leaveSummaryBloc/leaveSummaryState.dart';
 import 'package:ess_application/config/appTheme.dart';
+import 'package:ess_application/model/leaveSummary.dart';
 import 'package:ess_application/repository/leaveSummaryRepository.dart';
+import 'package:ess_application/ui/commonWidgets/commonWidgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class EmployeeLeaveBalalnceHistoryListView extends StatelessWidget {
+class EmployeeLeaveBalalnceHistoryListViewMain extends StatelessWidget {
+  final LeaveSummaryRepository leaveSummaryRepository =
+      LeaveSummaryRepository();
 
-  LeaveSummaryRepository leaveSummaryRepository;
-  final List items = [
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1
-  ];
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+        create: (context) {
+          return LeaveSummaryBloc(
+              leaveSummaryRepository: leaveSummaryRepository)
+            ..add(LeaveSummaryFetched());
+        },
+        child: EmployeeLeaveBalalnceHistoryListView(context));
+  }
+}
 
+class EmployeeLeaveBalalnceHistoryListView extends StatefulWidget {
+  final BuildContext context;
+  EmployeeLeaveBalalnceHistoryListView(this.context);
+  @override
+  _EmployeeLeaveBalalnceHistoryListViewState createState() =>
+      _EmployeeLeaveBalalnceHistoryListViewState();
+}
 
-    
-    return Container(
-      height: MediaQuery.of(context).size.height - 290,
-      child: ListView.builder(
-          padding: EdgeInsets.only(top: 0, left: 12, right: 12),
-          shrinkWrap: true,
-        
-          itemCount: items.length,
-          scrollDirection: Axis.vertical,
-          itemBuilder: (BuildContext context, int index) {
-            return listTile(context, index);
-          }),
-    );
+class _EmployeeLeaveBalalnceHistoryListViewState
+    extends State<EmployeeLeaveBalalnceHistoryListView> {
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+
+  LeaveSummaryBloc leaveSummaryBloc;
+
+  @override
+  void dispose() {
+   
+
+    _scrollController.dispose();
+    super.dispose();
   }
 
-  Widget listTile(BuildContext context, int index) {
+  @override
+  void initState()  {
+    super.initState();
+
+   
+
+    _scrollController.addListener(_onScroll);
+    leaveSummaryBloc = BlocProvider.of<LeaveSummaryBloc>(context);
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      leaveSummaryBloc.add(LeaveSummaryFetched());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LeaveSummaryBloc, LeaveSummaryState>(
+      builder: (BuildContext context, state) {
+        if (state is LeaveSummaryInProgressState) {
+          return CommonWidgets.progressIndicator;
+        }
+
+        if (state is LeaveSummaryFailureState) {
+          return Center(
+            child: Text("No record Found"),
+          );
+        }
+
+        if (state is LeaveSummarySuccessState) {
+          return Container(
+            height: MediaQuery.of(context).size.height - 290,
+            child: ListView.builder(
+                padding: EdgeInsets.only(top: 0, left: 12, right: 12),
+                shrinkWrap: true,
+                itemCount: state.hasReachedMax
+                    ? state.leaveSummaryList.length
+                    : state.leaveSummaryList.length + 1,
+                controller: _scrollController,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (BuildContext context, int index) {
+                  return index >= state.leaveSummaryList.length
+                      ? Padding(
+                          padding: EdgeInsets.only(top: 8, bottom: 8),
+                          child: CommonWidgets.progressIndicator)
+                      : listTile(context, state.leaveSummaryList[index]);
+                }),
+          );
+        }
+        return Center(
+          child: Text('no items'),
+        );
+      },
+    );
+
+    //  Container(
+    //   height: MediaQuery.of(context).size.height - 290,
+    //   child: ListView.builder(
+    //       padding: EdgeInsets.only(top: 0, left: 12, right: 12),
+    //       shrinkWrap: true,
+
+    //       itemCount: items.length,
+    //       scrollDirection: Axis.vertical,
+    //       itemBuilder: (BuildContext context, int index) {
+    //         return listTile(context, index);
+    //       }),
+    // );
+  }
+
+  Widget listTile(BuildContext context, LeaveSummary leaveSummary) {
     return Padding(
       padding: const EdgeInsets.only(left: 0.0, right: 0),
       child: InkWell(
@@ -71,9 +142,9 @@ class EmployeeLeaveBalalnceHistoryListView extends StatelessWidget {
                   Row(
                     children: [
                       Material(
-                          color: index % 2 == 0
+                          color: leaveSummary.leaveType.contains("Medical")
                               ? AppTheme.pieChartBackgroundColor1
-                              : index % 3 == 0
+                              : leaveSummary.leaveType.contains("Annual")
                                   ? AppTheme.pieChartBackgroundColor3
                                   : AppTheme.pieChartBackgroundColor2,
                           shape: CircleBorder(),
@@ -131,7 +202,7 @@ class EmployeeLeaveBalalnceHistoryListView extends StatelessWidget {
                             SizedBox(
                               height: 3,
                             ),
-                            index % 2 == 0
+                            leaveSummary.leaveType.contains("Medical")
                                 ? Container(
                                     decoration: BoxDecoration(
                                         color:
@@ -156,7 +227,7 @@ class EmployeeLeaveBalalnceHistoryListView extends StatelessWidget {
                                       ),
                                     ),
                                   )
-                                : index % 3 == 0
+                                : leaveSummary.leaveType.contains("Annual")
                                     ? Container(
                                         decoration: BoxDecoration(
                                             color: AppTheme

@@ -10,11 +10,11 @@ class LeaveSummaryService {
   List<LeaveSummary> leaveSummaryList = [];
   Future<List<LeaveSummary>> getLeaveSummary(int startingPoint,int maxResults) async {
     final http.Response response =
-        await httpService.getRequet(APIConstants.salarySlipEndpoint);
+        await httpService.getRequet(APIConstants.leaveSummaryEndpoint);
 
     if (response.statusCode == 200) {
 
-      print("response body  in Salary Slip Screen: ${response.body}");
+      print("response body  in leave Summary: ${response.body}");
 
       leaveSummaryList = (json.decode(response.body) as List)
           .map((i) => LeaveSummary.fromJson(i))

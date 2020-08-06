@@ -4,15 +4,14 @@ import 'package:ess_application/bloc/salarySlipBloc/salarySlipState.dart';
 import 'package:ess_application/config/appTheme.dart';
 import 'package:ess_application/repository/salalrySlipRepository.dart';
 import 'package:ess_application/ui/SalarySlipScreen/salarySlipListViewVerticalItemCard.dart';
-import 'package:ess_application/ui/commonWidgets/bottomLoader.dart';
 import 'package:ess_application/ui/commonWidgets/commonWidgets.dart';
 import 'package:ess_application/ui/commonWidgets/loadingIndicator.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SalarySlipItemsListViewVericalMain extends StatelessWidget {
-  SalarySlipRepository salarySlipRepository = new SalarySlipRepository();
+
+ final  SalarySlipRepository salarySlipRepository = new SalarySlipRepository();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +56,8 @@ class SalarySlipItemsListViewVericalMain extends StatelessWidget {
 }
 
 class SalarySlipItemsListViewVerical extends StatefulWidget {
-  BuildContext context;
+
+ final  BuildContext context;
   SalarySlipItemsListViewVerical({this.context});
   @override
   _SalarySlipItemsListViewVericalState createState() =>
@@ -67,24 +67,7 @@ class SalarySlipItemsListViewVerical extends StatefulWidget {
 class _SalarySlipItemsListViewVericalState
     extends State<SalarySlipItemsListViewVerical>
     with TickerProviderStateMixin {
-  List category = [
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    11,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-  ];
+
 
   AnimationController animationController;
   final _scrollController = ScrollController();
@@ -119,10 +102,7 @@ class _SalarySlipItemsListViewVericalState
     super.dispose();
   }
 
-  Future<bool> getData() async {
-    await Future<dynamic>.delayed(const Duration(milliseconds: 50));
-    return true;
-  }
+  
 
   @override
   Widget build(BuildContext context) {

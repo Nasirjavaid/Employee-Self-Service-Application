@@ -5,9 +5,10 @@ import 'package:ess_application/config/appTheme.dart';
 import 'package:ess_application/model/leaveBalance.dart';
 import 'package:ess_application/repository/leaveBalanceRepository.dart';
 import 'package:ess_application/ui/EmployeeLeaveBalanceScreen/EmplloyeeLeaveBalanceDataTable.dart';
-import 'package:ess_application/ui/EmployeeLeaveBalanceScreen/EmployeeLeaveBalanceHistoryListView.dart';
+
 import 'package:ess_application/ui/EmployeeLeaveBalanceScreen/EmployeeLeaveBalancePieChart.dart';
 import 'package:ess_application/ui/commonWidgets/loadingIndicator.dart';
+import 'package:ess_application/ui/employeeLeaveBalanceScreen/EmployeeLeaveBalanceHistoryListView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -92,7 +93,7 @@ class _EmployeeLeaveBalanceScreenState
                           piechartView(context, state.leaveBalance),
 
                           rowWithLeaveTextAndLeaveTypeFilter(context),
-                          EmployeeLeaveBalalnceHistoryListView(),
+                          EmployeeLeaveBalalnceHistoryListViewMain(),
                         ],
                       )),
                     );
@@ -109,20 +110,23 @@ class _EmployeeLeaveBalanceScreenState
   }
 
   Widget piechartView(BuildContext context, LeaveBalance leaveBalance) {
-
 // map values for pie chart 1
-    pieCahartdataMap1.putIfAbsent("AnnualAvailed", () => leaveBalance.annualAvailed.toDouble());
-    pieCahartdataMap1.putIfAbsent("AnnualBalance", () => leaveBalance.annualBalance.toDouble());
+    pieCahartdataMap1.putIfAbsent(
+        "AnnualAvailed", () => leaveBalance.annualAvailed.toDouble());
+    pieCahartdataMap1.putIfAbsent(
+        "AnnualBalance", () => leaveBalance.annualBalance.toDouble());
 
 // map values for pie chart 2
-    pieCahartdataMap2.putIfAbsent("CasualAvailed", () =>leaveBalance.casualAvailed.toDouble());
-    pieCahartdataMap2.putIfAbsent("CasualBalance", () => leaveBalance.casualBalance.toDouble());
+    pieCahartdataMap2.putIfAbsent(
+        "CasualAvailed", () => leaveBalance.casualAvailed.toDouble());
+    pieCahartdataMap2.putIfAbsent(
+        "CasualBalance", () => leaveBalance.casualBalance.toDouble());
 
 // map values for pie chart 3
-    pieCahartdataMap3.putIfAbsent("MedicalAvailed", () => leaveBalance.medicalAvailed.toDouble());
-    pieCahartdataMap3.putIfAbsent("MedicalBalance", () => leaveBalance.medicalBalance.toDouble());
-
-
+    pieCahartdataMap3.putIfAbsent(
+        "MedicalAvailed", () => leaveBalance.medicalAvailed.toDouble());
+    pieCahartdataMap3.putIfAbsent(
+        "MedicalBalance", () => leaveBalance.medicalBalance.toDouble());
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -144,7 +148,9 @@ class _EmployeeLeaveBalanceScreenState
                   EmployeeLeaveBalancePieChart(
                     pieCahrtColorList: AppTheme.pieCahrtColourList1,
                     dataMap: pieCahartdataMap1,
-                    totalLeaves: leaveBalance.annualEntitlement != null ? leaveBalance.annualEntitlement : 0,
+                    totalLeaves: leaveBalance.annualEntitlement != null
+                        ? leaveBalance.annualEntitlement
+                        : 0,
                     pieChartBackgroundColor: AppTheme.pieChartBackgroundColor3,
                     showLegendBit: false,
                     leaveTypeText: "Annual",
@@ -152,7 +158,9 @@ class _EmployeeLeaveBalanceScreenState
                   EmployeeLeaveBalancePieChart(
                       pieCahrtColorList: AppTheme.pieCahrtColourList1,
                       dataMap: pieCahartdataMap2,
-                      totalLeaves: leaveBalance.casualEntitlement != null ? leaveBalance.casualEntitlement : 0,
+                      totalLeaves: leaveBalance.casualEntitlement != null
+                          ? leaveBalance.casualEntitlement
+                          : 0,
                       showLegendBit: false,
                       pieChartBackgroundColor:
                           AppTheme.pieChartBackgroundColor2,
@@ -160,7 +168,9 @@ class _EmployeeLeaveBalanceScreenState
                   EmployeeLeaveBalancePieChart(
                     pieCahrtColorList: AppTheme.pieCahrtColourList1,
                     dataMap: pieCahartdataMap3,
-                    totalLeaves: leaveBalance.medicalEntitlement != null ? leaveBalance.medicalEntitlement : 0,
+                    totalLeaves: leaveBalance.medicalEntitlement != null
+                        ? leaveBalance.medicalEntitlement
+                        : 0,
                     showLegendBit: false,
                     leaveTypeText: "Medical",
                     pieChartBackgroundColor: AppTheme.pieChartBackgroundColor1,

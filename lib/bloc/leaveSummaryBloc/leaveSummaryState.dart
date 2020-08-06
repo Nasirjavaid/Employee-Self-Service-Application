@@ -9,6 +9,8 @@ abstract class LeaveSummaryState extends Equatable {
   List<Object> get props => [];
 }
 
+class LeaveSummaryInProgressState extends LeaveSummaryState{}
+
 class LeaveSummaryInitialState extends LeaveSummaryState {}
 
 class LeaveSummaryFailureState extends LeaveSummaryState {}

@@ -1,6 +1,4 @@
-
 import 'package:ess_application/model/leaveSummary.dart';
-
 import 'package:ess_application/service/leaveSummaryService.dart';
 
 
@@ -12,7 +10,7 @@ class LeaveSummaryRepository {
     leaveSummaryList = await leaveSummaryService.getLeaveSummary(startingPoint,maxResults);
 
     print(
-        "Salalry slip data in Salary slip Repository ${leaveSummaryList[0].leaveType}");
+        "leave summary data in leave summary repository ${leaveSummaryList[0].leaveType}");
 
     if (leaveSummaryList.length != 0) {
       return leaveSummaryList;
